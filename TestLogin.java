@@ -1,3 +1,10 @@
+//https://github.com/ObjectiveTester/AllThingsTesting.com-examples/blob/master/SeleniumParallel/src/test/java/com/example/objects/CartPage.java
+//https://stackoverflow.com/questions/31555652/how-to-count-the-products-on-a-page-using-selenium
+//https://github.com/ObjectiveTester/AllThingsTesting.com-examples/blob/master/SeleniumParallel/src/test/java/com/example/objects/InventoryPage.java
+//https://allthingstesting.com/ui-testing-with-selenium-record-and-refactor/
+//edge://favorites/?id=243
+
+
 package test_page.shop;
 
 import org.junit.Assert;
@@ -14,7 +21,10 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.*;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeTest;
+
 import static org.junit.Assert.*;
 
 public class TestLogin {
@@ -22,7 +32,9 @@ public class TestLogin {
     public WebDriver driver;
     public String URL="https://www.saucedemo.com/";
 
-    @BeforeEach
+    //--> Junit //@BeforeEach
+    //TestNG -->
+    @BeforeTest
     public void setup(){
         File file = new File("src/main/resources/chromedriver.exe");
         System.setProperty("web-driver.chrome.driver", file.getAbsoluteFile().toString());
@@ -37,7 +49,13 @@ public class TestLogin {
     @Test
     public void login() throws InterruptedException {
 
-        WebDriver driver=new ChromeDriver();
+        var options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless");
+
+        WebDriver driver=new ChromeDriver(options);
+
         driver.get(URL);
         String username = "standard_user";
         String password = "secret_sauce";
@@ -176,6 +194,7 @@ public class TestLogin {
 
         boolean ponyImageLoaded;
         ponyImageLoaded = (boolean) ((JavascriptExecutor) driver).executeScript("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", imageWebElement);
+
 
         Assert.assertTrue(ponyImageLoaded);
         System.out.println("Image is loaded ---> " + ponyImageLoaded);
